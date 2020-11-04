@@ -12,4 +12,5 @@
 @import url('./blocks/popup-delete/popup-delete.css');
 @import url('./blocks/popup-element/__input/_type/popup-element__input_type_link-img.css');
 @import url('./blocks/login/login.css');
+@import url('./blocks/tool-tip/tool-tip.css')
 

@@ -1,6 +1,6 @@
 import React from 'react';
 import { api } from '../utils/Api'
-import { Switch, Route } from 'react-router-dom';
+import { Switch, Route, Redirect, useHistory, useLocation } from 'react-router-dom';
 import Header from './Header';
 import Main from './Main';
 import Footer from './Footer';
@@ -14,6 +14,8 @@ import Login from './Login';
 import InfoTooltip from './InfoTooltip';
 import PageNotFound from './PageNotFound';
 import { CurrentUserContext } from '../contexts/CurrentUserContext';
+import ProtectedRoute from './ProtectedRoute';
+import { register, authorize, getContent } from '../utils/auth';
 
 function App() {
 
@@ -26,6 +28,64 @@ function App() {
   const [cards, setCards] = React.useState([]);
   const [isConfirmPopupOpen, setIsConfirmPopupOpen] = React.useState(false);
   const [isLoading, setIsLoading] = React.useState(false);
+  const [loggedIn, setloggedIn] = React.useState(false);
+  const [message, setMessage] = React.useState('');
+  const [isInfoTooltipPopupOpen, setIsInfoTooltipPopupOpen] = React.useState(false);
+
+
+  const history = useHistory();
+  const location = useLocation();
+
+  const handleLogin = (password, email) => {
+    authorize(password, email)
+      .then(() => {
+        setloggedIn(true);
+        history.push('/');
+        return;
+      })
+      .catch(() => {
+        setMessage('Что-то пошло не так! Попробуйте ещё раз.');
+
+      })
+  }
+
+  function handleRegisterSubmit(password, email) {
+    register(password, email)
+      .then((res) => {
+        if (res) {
+          setMessage('Вы успешно зарегистрировались!');
+          setIsInfoTooltipPopupOpen(true);
+          history.push('/signin');
+          return;
+        }
+      })
+      .catch(() => {
+        setMessage('Что-то пошло не так! Попробуйте ещё раз.');
+        setIsInfoTooltipPopupOpen(true);
+      })
+  }
+
+  React.useEffect(() => {
+    if (localStorage.getItem('token')) {
+      Promise.all([getContent(), api.getInitialCards()])
+        .then(([userInfo, cardsInfo]) => {
+          if (userInfo) {
+            setСurrentUser(userInfo);
+            setCards(cardsInfo.data);
+            setloggedIn(true);
+            history.push('/');
+          }
+        })
+        .catch((err) => {
+          if (err === 400) {
+            console.error('Токен не передан или передан не в том формате');
+          }
+          if (err === 401) {
+            console.error('Переданный токен некорректен');
+          }
+        });
+    }
+  }, [location.pathname]);
 
 
   React.useEffect(() => {
@@ -131,8 +191,9 @@ function App() {
     setIsEditAvatarPopupOpen(false);
     setSelectedCard({});
     setIsImagePopupOpen(false);
-    setIsConfirmPopupOpen(false)
-    setIsLoading(false)
+    setIsConfirmPopupOpen(false);
+    setIsLoading(false);
+    setIsInfoTooltipPopupOpen(false);
   }
 
   const handleCardConfirm = (card) => {
@@ -147,20 +208,31 @@ function App() {
   }
 
   return (
-    <Switch>
-      <Route path="/sign-in">
-        <Login />
-      </Route>
-
-      <Route path="/sign-up">
-        <Register />
-      </Route>
-
+    <CurrentUserContext.Provider value={currentUser}>
       <div className="page">
-        <CurrentUserContext.Provider value={currentUser}>
-          <Header />
+        <Header />
+        {/* {currentUser && cards && <Main
+          onEditAvatar={handleEditAvatarClick}
+          onEditProfile={handleEditProfileClick}
+          onAddPlace={handleAddPlaceClick}
+          onCardClick={handleCardClick}
+          cards={cards}
+          onCardLike={handleCardLike}
+          onCardDelete={handleCardConfirm}
 
-          {currentUser && cards && <Main
+        />} */}
+        <Switch>
+
+          <Route path="/signin">
+            <Login onLogin={handleLogin} />
+          </Route>
+
+          <Route path="/signup">
+            <Register onRegister={handleRegisterSubmit} />
+          </Route>
+
+          <ProtectedRoute path='/'
+            component={Main}
             onEditAvatar={handleEditAvatarClick}
             onEditProfile={handleEditProfileClick}
             onAddPlace={handleAddPlaceClick}
@@ -168,16 +240,21 @@ function App() {
             cards={cards}
             onCardLike={handleCardLike}
             onCardDelete={handleCardConfirm}
+            loggedIn={loggedIn}
+            value={currentUser}
+          />
 
-          />}
+          <Route path="/">
+            {loggedIn ? <Redirect to="/" /> : <Redirect to="/sign-in" />}
+          </Route>
 
           <Footer />
 
-          <EditProfilePopup
+          {currentUser && <EditProfilePopup
             isOpen={isEditProfilePopupOpen}
             onClose={closeAllPopups}
             onUpdateUser={handleUpdateUser}
-            buttonText={isLoading ? 'Сохранение...' : 'Сохранить'} />
+            buttonText={isLoading ? 'Сохранение...' : 'Сохранить'} />}
 
           <AddPlacePopup
             isOpen={isAddPlacePopupOpen}
@@ -203,17 +280,17 @@ function App() {
             buttonText={isLoading ? 'Сохранение...' : 'Да'}
           />
 
-          <InfoTooltip />
+          <InfoTooltip
+            onClose={closeAllPopups}
+            isOpen={isInfoTooltipPopupOpen} />
 
-        </CurrentUserContext.Provider>
+          <Route path="*">
+            <PageNotFound />
+          </Route>
 
+        </Switch>
       </div>
-
-      <Route path="/*">
-        <PageNotFound />
-      </Route>
-
-    </Switch>
+    </CurrentUserContext.Provider>
   );
 }
 

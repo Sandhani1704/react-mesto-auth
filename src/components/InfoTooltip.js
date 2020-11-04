@@ -3,9 +3,17 @@ import PopupWithForm from './PopupWithForm';
 import imgSuccess from '../images/Union_success.png'
 // import imgFail from '../images/Union_fail.png'
 
-function InfoTooltip() {
+function InfoTooltip({ onClose }) { // hasError 
+    const [isOpenInfoTool, setIsOpenInfoTool] = React.useState(true);
+
+
     return (
-        <PopupWithForm>
+        <PopupWithForm
+            isOpen={isOpenInfoTool}
+            onClose={onClose}
+            name='popup-tool-tip'
+        >
+
             <img className="tool-tip__image" src={imgSuccess} alt='#' />
             <p className="tool-tip__title">Вы успешно зарегистировались!</p>
         </PopupWithForm>
