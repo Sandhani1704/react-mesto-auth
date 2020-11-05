@@ -1,9 +1,7 @@
 .popup__container {
     position: relative;
-    align-items: center;
     display: flex;
     flex-direction: column;
-    justify-content: center;    
     max-width: 430px;
     width: 100%;
     background: #FFFFFF;
