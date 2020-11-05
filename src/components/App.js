@@ -31,6 +31,8 @@ function App() {
   const [loggedIn, setloggedIn] = React.useState(false);
   const [message, setMessage] = React.useState('');
   const [isInfoTooltipPopupOpen, setIsInfoTooltipPopupOpen] = React.useState(false);
+  const [infoLoginUser, setInfoLoginUser] = React.useState('');
+  // const [loggedOut, setloggedOut] = React.useState(false);
 
 
   const history = useHistory();
@@ -86,6 +88,13 @@ function App() {
         });
     }
   }, [location.pathname]);
+
+
+  function signOut() {
+    localStorage.removeItem('jwt');
+    setloggedIn(false);
+    history.push('/signin');
+  }
 
 
   React.useEffect(() => {
@@ -210,7 +219,9 @@ function App() {
   return (
     <CurrentUserContext.Provider value={currentUser}>
       <div className="page">
-        <Header />
+
+        <Header loggedIn={loggedIn} loggedOut={signOut} />
+
         {/* {currentUser && cards && <Main
           onEditAvatar={handleEditAvatarClick}
           onEditProfile={handleEditProfileClick}
@@ -242,55 +253,61 @@ function App() {
             onCardDelete={handleCardConfirm}
             loggedIn={loggedIn}
             value={currentUser}
+
           />
+
+          {/* <ProtectedRoute path='/' component={Footer} loggedIn={loggedIn} /> */}
 
           <Route path="/">
-            {loggedIn ? <Redirect to="/" /> : <Redirect to="/sign-in" />}
+            {loggedIn ? <Redirect to="/" /> : <Redirect to="/signin" />}
           </Route>
-
-          <Footer />
-
-          {currentUser && <EditProfilePopup
-            isOpen={isEditProfilePopupOpen}
-            onClose={closeAllPopups}
-            onUpdateUser={handleUpdateUser}
-            buttonText={isLoading ? 'Сохранение...' : 'Сохранить'} />}
-
-          <AddPlacePopup
-            isOpen={isAddPlacePopupOpen}
-            onClose={closeAllPopups}
-            onAddCards={handleAddPlaceSubmit}
-            buttonText={isLoading ? 'Сохранение...' : 'Создать'} />
-
-          <EditAvatarPopup
-            isOpen={isEditAvatarPopupOpen}
-            onClose={closeAllPopups}
-            onUpdateAvatar={handleUpdateAvatar}
-            buttonText={isLoading ? 'Сохранение...' : 'Сохранить'} />
-
-          <ImagePopup
-            card={selectedCard}
-            isOpen={isImagePopupOpen}
-            onClose={closeAllPopups} />
-
-          <ConfirmPopup
-            onConfirm={handleCardDelete}
-            onClose={closeAllPopups}
-            isOpen={isConfirmPopupOpen}
-            buttonText={isLoading ? 'Сохранение...' : 'Да'}
-          />
-
-          <InfoTooltip
-            onClose={closeAllPopups}
-            isOpen={isInfoTooltipPopupOpen} />
 
           <Route path="*">
             <PageNotFound />
           </Route>
 
         </Switch>
+
+        {loggedIn && <Footer />}
+
+        {currentUser && <EditProfilePopup
+          isOpen={isEditProfilePopupOpen}
+          onClose={closeAllPopups}
+          onUpdateUser={handleUpdateUser}
+          buttonText={isLoading ? 'Сохранение...' : 'Сохранить'} />}
+
+        <AddPlacePopup
+          isOpen={isAddPlacePopupOpen}
+          onClose={closeAllPopups}
+          onAddCards={handleAddPlaceSubmit}
+          buttonText={isLoading ? 'Сохранение...' : 'Создать'} />
+
+        <EditAvatarPopup
+          isOpen={isEditAvatarPopupOpen}
+          onClose={closeAllPopups}
+          onUpdateAvatar={handleUpdateAvatar}
+          buttonText={isLoading ? 'Сохранение...' : 'Сохранить'} />
+
+        <ImagePopup
+          card={selectedCard}
+          isOpen={isImagePopupOpen}
+          onClose={closeAllPopups} />
+
+        <ConfirmPopup
+          onConfirm={handleCardDelete}
+          onClose={closeAllPopups}
+          isOpen={isConfirmPopupOpen}
+          buttonText={isLoading ? 'Сохранение...' : 'Да'}
+        />
+
+        <InfoTooltip
+          onClose={closeAllPopups}
+          isOpen={isInfoTooltipPopupOpen}
+          loggedIn={loggedIn} />
+
+
       </div>
-    </CurrentUserContext.Provider>
+    </CurrentUserContext.Provider >
   );
 }
 

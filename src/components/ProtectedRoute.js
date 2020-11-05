@@ -7,7 +7,7 @@ const ProtectedRoute = ({ component: Component, ...props }) => {
             {
                 // Если значение loggedIn — true, Route либо отрисует компонент, который передан HOC-компоненту как пропс,
                 // включая переданные пропсы, либо вернёт компонент Redirect и переадресует пользователя на страницу авторизации. 
-                () => props.loggedIn ? <Component {...props} /> : <Redirect to="./sign-in" />
+                () => props.loggedIn ? <Component {...props} /> : <Redirect to="./signin" />
             }
         </Route>
     )

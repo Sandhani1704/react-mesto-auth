@@ -3,7 +3,7 @@ import { Link, useLocation } from 'react-router-dom';
 import headerLogo from '../images/logo.png';
 
 
-function Header() {
+function Header({ loggedIn, loggedOut }) {
 
     const path = useLocation().pathname;
 
@@ -11,9 +11,13 @@ function Header() {
 
         <header className="header">
             <img className="header__logo" src={headerLogo} alt="Логотип Mestro" />
-            <Link className="header__link" to={(path === '/sign-up') ? '/signin' : '/signup'}>
-                {(path === '/signup') ? 'Войти' : 'Регистрация'}
-            </Link>
+            {loggedIn ? <div className="header__info">
+                <p className="header__email">email</p>
+                <button className="header__logout-button" onClick={loggedOut}>Выйти</button>
+            </div> :
+                <Link className="header__link" to={(path === '/signup') ? '/signin' : '/signup'}>
+                    {(path === '/signup') ? 'Войти' : 'Регистрация'}
+                </Link>}
         </header>
 
 
