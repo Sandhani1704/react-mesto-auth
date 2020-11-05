@@ -1,12 +1,9 @@
 import React from 'react';
 import { Link, useHistory } from 'react-router-dom';
 
-// import * as auth from '../utils/auth';
-
 function Register({ onRegister }) {
 
     const [userData, setUserData] = React.useState({ password: '', email: '' });
-    // const history = useHistory();
 
     const handleChange = (e) => {
         const { name, value } = e.target;
@@ -18,15 +15,6 @@ function Register({ onRegister }) {
     const handleSubmit = (e) => {
         e.preventDefault();
 
-        // auth.register(userData.password, userData.email).then((res) => {
-        //     // console.log(res)
-        //     if (res.status !== 400) {
-        //         history.push('/signin');
-
-        //         return;
-        //     }
-
-        // });
         onRegister(userData.password, userData.email)
 
     }

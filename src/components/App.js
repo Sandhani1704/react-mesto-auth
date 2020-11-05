@@ -68,10 +68,10 @@ function App() {
   React.useEffect(() => {
     if (localStorage.getItem('token')) {
       Promise.all([getContent(), api.getInitialCards()])
-        .then(([userInfo, cardsInfo]) => {
-          if (userInfo) {
-            setСurrentUser(userInfo);
-            setCards(cardsInfo.data);
+        .then(([user, cards]) => {
+          if (user) {
+            setСurrentUser(user);
+            setCards(cards);
             setloggedIn(true);
             history.push('/');
           }

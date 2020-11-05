@@ -1,11 +1,9 @@
 import React from 'react';
-import { Link, useHistory } from 'react-router-dom';
-// import * as auth from '../utils/auth';
+import { Link } from 'react-router-dom';
 
 function Login(props) {
 
     const [userData, setUserData] = React.useState({ password: '', email: '' });
-    const history = useHistory();
 
     const handleChange = (e) => {
         const { name, value } = e.target;

@@ -6,8 +6,8 @@ export const register = (password, email) => {
         headers: {
             'Content-Type': 'application/json'
         },
-        // body: JSON.stringify(password, email)
-        body: JSON.stringify({ password: "dsfsdfsdfsdf", email: "Letogteti1234567891023@mail.ru" })
+        body: JSON.stringify({ password, email })
+        // body: JSON.stringify({ password: "dsfsdfsdfsdf", email: "Letogteti1234567891023@mail.ru" })
 
     })
         .then((response) => {
@@ -26,7 +26,8 @@ export const authorize = (password, email) => {
             'Accept': 'application/json',
             'Content-Type': 'application/json'
         },
-        body: JSON.stringify({ password: "dsfsdfsdfsdf", email: "Letogteti12345@mail.ru" })
+        // body: JSON.stringify({ password: "dsfsdfsdfsdf", email: "Letogteti12345@mail.ru" })
+        body: JSON.stringify({ password, email })
     })
         .then((response => response.json()))
         .then((data) => {
