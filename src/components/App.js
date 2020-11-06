@@ -16,6 +16,9 @@ import PageNotFound from './PageNotFound';
 import { CurrentUserContext } from '../contexts/CurrentUserContext';
 import ProtectedRoute from './ProtectedRoute';
 import { register, authorize, getContent } from '../utils/auth';
+import imgSuccess from '../images/Union_success.png'
+import imgFail from '../images/Union_fail.png';
+import { getToken } from '../utils/token';
 
 function App() {
 
@@ -33,61 +36,141 @@ function App() {
   const [isInfoTooltipPopupOpen, setIsInfoTooltipPopupOpen] = React.useState(false);
   const [infoLoginUser, setInfoLoginUser] = React.useState('');
   // const [loggedOut, setloggedOut] = React.useState(false);
+  const [email, setEmail] = React.useState('');
+  const [infoTooltipImage, setInfoTooltipImage] = React.useState(imgSuccess);
 
 
   const history = useHistory();
   const location = useLocation();
 
-  const handleLogin = (password, email) => {
-    authorize(password, email)
-      .then(() => {
-        setloggedIn(true);
-        history.push('/');
-        return;
-      })
-      .catch(() => {
-        setMessage('Что-то пошло не так! Попробуйте ещё раз.');
+  const tokenCheck = () => {
+    const jwt = getToken();
 
-      })
+    if (!jwt) {
+      return;
+    }
+
+    getContent(jwt).then((res) => {
+      if (res) {
+        // const userData = {
+        //   email: res.email
+        // }
+        const email = res.email;
+        setloggedIn(true);
+        setEmail(email);
+        history.push('/')
+      }
+    });
   }
+
+  React.useEffect(() => {
+    tokenCheck();
+    setloggedIn(true);
+  }, []);
+
+
+  // React.useEffect(() => {
+  //   const jwt = localStorage.getItem('jwt');
+  //   if (jwt) {
+  //     setloggedIn(true);
+  //   }
+  // }, [])
+
+  // function handleRegisterSubmit(password, email) {
+  //   register(password, email)
+  //     .then((res) => {
+  //       if (res.statusCode !== 400) {
+  //         setMessage('');
+  //         history.push('/signup');
+  //       } else {
+  //         setMessage('Что-то пошло не так! Попробуйте ещё раз.');
+  //         setIsInfoTooltipPopupOpen(true);
+  //         setInfoTooltipImage(imgFail);
+  //       }
+  //       {
+  //         setMessage('Вы успешно зарегистрировались!');
+  //         setIsInfoTooltipPopupOpen(true);
+  //         setInfoTooltipImage(imgSuccess)
+  //         history.push('/');
+  //         return;
+  //       }
+  //     })
+  //     .catch(() => {
+  //       setMessage('Что-то пошло не так! Попробуйте ещё раз.');
+  //       setIsInfoTooltipPopupOpen(true);
+  //       setInfoTooltipImage(imgFail);
+  //     })
+  // }
 
   function handleRegisterSubmit(password, email) {
     register(password, email)
       .then((res) => {
-        if (res) {
+        if (res.Status === 400) {
+          setMessage('Что-то пошло не так! Попробуйте ещё раз.');
+          setIsInfoTooltipPopupOpen(true);
+          setInfoTooltipImage(imgFail);
+          history.push('/signup');
+          return;
+        } else {
           setMessage('Вы успешно зарегистрировались!');
           setIsInfoTooltipPopupOpen(true);
-          history.push('/signin');
-          return;
+          setInfoTooltipImage(imgSuccess);
+          history.push('/');
         }
+
       })
       .catch(() => {
         setMessage('Что-то пошло не так! Попробуйте ещё раз.');
         setIsInfoTooltipPopupOpen(true);
+        setInfoTooltipImage(imgFail);
       })
   }
 
-  React.useEffect(() => {
-    if (localStorage.getItem('token')) {
-      Promise.all([getContent(), api.getInitialCards()])
-        .then(([user, cards]) => {
-          if (user) {
-            setСurrentUser(user);
-            setCards(cards);
-            setloggedIn(true);
-            history.push('/');
-          }
-        })
-        .catch((err) => {
-          if (err === 400) {
-            console.error('Токен не передан или передан не в том формате');
-          }
-          if (err === 401) {
-            console.error('Переданный токен некорректен');
-          }
-        });
-    }
-  }, [location.pathname]);
+  const handleLogin = (password, email) => {
+
+    authorize(password, email)
+
+      .then((res) => {
+        if (!res) {
+          setMessage('Что-то пошло не так! Попробуйте ещё раз.')
+        }
+        if (res.statusCode !== 400) {
+          setEmail(email);
+          setloggedIn(true);
+          history.push('/');
+          return;
+        }
+      })
+      // .then(() => {
+      //   handleInfoToolTipOpen();
+      // })
+      .catch(() => {
+        setMessage('Что-то пошло не так! Попробуйте ещё раз.');
+
+      })
+  }
+
+  // React.useEffect(() => {
+  //   if (localStorage.getItem('token')) {
+  //     Promise.all([getContent(), api.getInitialCards()])
+  //       .then(([user, cards]) => {
+  //         if (user) {
+  //           setСurrentUser(user);
+  //           setCards(cards);
+  //           setloggedIn(true);
+  //           history.push('/');
+  //         }
+  //       })
+  //       .catch((err) => {
+  //         if (err === 400) {
+  //           console.error('Токен не передан или передан не в том формате');
+  //         }
+  //         if (err === 401) {
+  //           console.error('Переданный токен некорректен');
+  //         }
+  //       });
+  //   }
+  // }, [location.pathname]);
 
 
   function signOut() {
@@ -220,7 +303,7 @@ function App() {
     <CurrentUserContext.Provider value={currentUser}>
       <div className="page">
 
-        <Header loggedIn={loggedIn} loggedOut={signOut} />
+        <Header email={email} loggedIn={loggedIn} loggedOut={signOut} />
 
         {/* {currentUser && cards && <Main
           onEditAvatar={handleEditAvatarClick}
@@ -255,8 +338,6 @@ function App() {
             value={currentUser}
 
           />
-
-          {/* <ProtectedRoute path='/' component={Footer} loggedIn={loggedIn} /> */}
 
           <Route path="/">
             {loggedIn ? <Redirect to="/" /> : <Redirect to="/signin" />}
@@ -303,7 +384,10 @@ function App() {
         <InfoTooltip
           onClose={closeAllPopups}
           isOpen={isInfoTooltipPopupOpen}
-          loggedIn={loggedIn} />
+          // loggedIn={loggedIn}
+          image={infoTooltipImage}
+          message={message}
+        />
 
 
       </div>

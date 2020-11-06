@@ -4,7 +4,7 @@ import imgSuccess from '../images/Union_success.png'
 import closeIcon from '../images/Close_Icon.svg';
 import imgFail from '../images/Union_fail.png';
 
-function InfoTooltip({ onClose, isOpen, loggedIn }) { // hasError 
+function InfoTooltip({ onClose, isOpen, image, message }) { // hasError 
     // const [isOpenInfoTool, setIsOpenInfoTool] = React.useState(true);
 
 
@@ -20,8 +20,10 @@ function InfoTooltip({ onClose, isOpen, loggedIn }) { // hasError
 
         <section className={`popup ${isOpen && 'popup_opened'}`}>
             <div className="popup__container">
-                <img className="tool-tip__image" alt="Картинка" src={!loggedIn ? imgSuccess : imgFail} />
-                <p className="tool-tip__title">{!loggedIn ? 'Вы успешно зарегистировались!' : 'Что-то пошло не так! Попробуйте еще раз.'}</p>
+                {/* <img className="tool-tip__image" alt="Картинка" src={loggedIn ? imgSuccess : imgFail} /> */}
+                <img className="tool-tip__image" alt="Картинка" src={image} />
+                {/* <p className="tool-tip__title">{loggedIn ? 'Вы успешно зарегистировались!' : 'Что-то пошло не так! Попробуйте еще раз.'}</p> */}
+                <p className="tool-tip__title">{message}</p>
                 <button type="button" className="popup__close" onClick={onClose}><img className="popup__close-icon" src={closeIcon} alt="закрыть" /></button>
             </div>
         </section>
