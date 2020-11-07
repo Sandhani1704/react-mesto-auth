@@ -1,5 +1,5 @@
 import React from 'react';
-import { Link, useHistory } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 
 function Register({ onRegister }) {
 
@@ -14,9 +14,7 @@ function Register({ onRegister }) {
 
     const handleSubmit = (e) => {
         e.preventDefault();
-
         onRegister(userData.password, userData.email)
-
     }
 
     return (

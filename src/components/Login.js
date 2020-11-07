@@ -12,25 +12,6 @@ function Login(props) {
         });
     }
 
-    // const handleSubmit = (e) => {
-    //     e.preventDefault();
-    //     if (!userData.email || !userData.password) {
-    //         return;
-    //     }
-
-    //     auth.authorize(userData.password, userData.email)
-    //         .then((data) => {
-    //             console.log(data)
-    //             if (data.jwt) {
-    //                 setUserData({ password: '', email: '' }, () => {
-    //                     handleLogin();
-    //                     history.push('/');
-    //                 })
-    //             }
-    //         })
-    //         .catch(err => console.log(err));
-    // }
-
     const handleSubmit = (e) => {
         e.preventDefault();
         props.onLogin(userData.password, userData.email);

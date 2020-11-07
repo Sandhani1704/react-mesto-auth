@@ -34,8 +34,6 @@ function App() {
   const [loggedIn, setloggedIn] = React.useState(false);
   const [message, setMessage] = React.useState('');
   const [isInfoTooltipPopupOpen, setIsInfoTooltipPopupOpen] = React.useState(false);
-  const [infoLoginUser, setInfoLoginUser] = React.useState('');
-  // const [loggedOut, setloggedOut] = React.useState(false);
   const [email, setEmail] = React.useState('');
   const [infoTooltipImage, setInfoTooltipImage] = React.useState(imgSuccess);
 
@@ -52,9 +50,6 @@ function App() {
 
     getContent(jwt).then((res) => {
       if (res) {
-        // const userData = {
-        //   email: res.email
-        // }
         const email = res.email;
         setloggedIn(true);
         setEmail(email);
@@ -65,7 +60,6 @@ function App() {
 
   React.useEffect(() => {
     tokenCheck();
-    setloggedIn(true);
   }, []);
 
 
@@ -76,54 +70,32 @@ function App() {
   //   }
   // }, [])
 
-  // function handleRegisterSubmit(password, email) {
-  //   register(password, email)
-  //     .then((res) => {
-  //       if (res.statusCode !== 400) {
-  //         setMessage('');
-  //         history.push('/signup');
-  //       } else {
-  //         setMessage('Что-то пошло не так! Попробуйте ещё раз.');
-  //         setIsInfoTooltipPopupOpen(true);
-  //         setInfoTooltipImage(imgFail);
-  //       }
-  //       {
-  //         setMessage('Вы успешно зарегистрировались!');
-  //         setIsInfoTooltipPopupOpen(true);
-  //         setInfoTooltipImage(imgSuccess)
-  //         history.push('/');
-  //         return;
-  //       }
-  //     })
-  //     .catch(() => {
-  //       setMessage('Что-то пошло не так! Попробуйте ещё раз.');
-  //       setIsInfoTooltipPopupOpen(true);
-  //       setInfoTooltipImage(imgFail);
-  //     })
-  // }
-
+  
   function handleRegisterSubmit(password, email) {
     register(password, email)
       .then((res) => {
-        if (res.Status === 400) {
-          setMessage('Что-то пошло не так! Попробуйте ещё раз.');
-          setIsInfoTooltipPopupOpen(true);
-          setInfoTooltipImage(imgFail);
-          history.push('/signup');
-          return;
-        } else {
+        console.log(res)
+        if (res.statusCode !== 400) {
           setMessage('Вы успешно зарегистрировались!');
           setIsInfoTooltipPopupOpen(true);
           setInfoTooltipImage(imgSuccess);
           history.push('/');
-        }
+          return
 
+        } else {
+          setMessage('Что-то пошло не так! Попробуйте ещё раз.');
+          setIsInfoTooltipPopupOpen(true);
+          setInfoTooltipImage(imgFail);
+          history.push('/signup');
+          return
+        }
       })
-      .catch(() => {
-        setMessage('Что-то пошло не так! Попробуйте ещё раз.');
-        setIsInfoTooltipPopupOpen(true);
-        setInfoTooltipImage(imgFail);
-      })
+      .catch(err => console.log(err))
+    // .catch(() => {
+    //   setMessage('Что-то пошло не так! Попробуйте ещё раз.');
+    //   setIsInfoTooltipPopupOpen(true);
+    //   setInfoTooltipImage(imgFail);
+    // })
   }
 
   const handleLogin = (password, email) => {
@@ -384,7 +356,7 @@ function App() {
         <InfoTooltip
           onClose={closeAllPopups}
           isOpen={isInfoTooltipPopupOpen}
-          // loggedIn={loggedIn}
+          loggedIn={loggedIn}
           image={infoTooltipImage}
           message={message}
         />

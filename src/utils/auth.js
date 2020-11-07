@@ -1,3 +1,4 @@
+import { setToken } from './token';
 export const BASE_URL = 'https://auth.nomoreparties.co';
 
 export const register = (password, email) => {
@@ -7,16 +8,16 @@ export const register = (password, email) => {
             'Content-Type': 'application/json'
         },
         body: JSON.stringify({ password, email })
-        // body: JSON.stringify({ password: "dsfsdfsdfsdf", email: "Letogteti1234567891023@mail.ru" })
-
     })
+    
         .then((response) => {
-            return response.json();
+           return response.json();
         })
+
         .then((res) => {
             return res;
         })
-        .catch((err) => console.log(err));
+        .catch((err) => console.log(err))
 };
 
 export const authorize = (password, email) => {
@@ -31,7 +32,8 @@ export const authorize = (password, email) => {
     })
         .then((response => response.json()))
         .then((data) => {
-            if (data.token) {
+            if (data.user) {
+                // setToken(data.jwt);
                 localStorage.setItem('jwt', data.jwt);
                 return data;
             }
