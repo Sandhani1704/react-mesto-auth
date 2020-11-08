@@ -41,27 +41,7 @@ function App() {
   const history = useHistory();
   const location = useLocation();
 
-  const tokenCheck = () => {
-    // const jwt = getToken();
-    const jwt = localStorage.getItem('jwt');
-
-    if (!jwt) {
-      return;
-    }
-
-    getContent(jwt).then((res) => {
-      if (res) {
-        const email = res.email;
-        setloggedIn(true);
-        setEmail(email);
-        history.push('/')
-      }
-    });
-  }
-
-  React.useEffect(() => {
-    tokenCheck();
-  },[loggedIn]);
+  
 
 
   // React.useEffect(() => {
@@ -72,48 +52,96 @@ function App() {
   // }, [])
 
 
+  // function handleRegisterSubmit(password, email) {
+  //   register(password, email)
+  //     // .then( e => {
+  //     //   console.log('Все ок', e)
+  //     // })
+  //     // .catch( e => {
+  //     //   console.log('Ошибка', e)
+  //     // })
+  //     .then((res) => {
+  //       console.log(res.status)
+  //       // if (res.statusCode !== 400) {
+  //       if (res.data) {
+  //         setMessage('Вы успешно зарегистрировались!');
+  //         setIsInfoTooltipPopupOpen(true);
+  //         setInfoTooltipImage(imgSuccess);
+  //         history.push('/');
+  //         return
+
+  //         // } else {
+  //         //   setMessage('Что-то пошло не так! Попробуйте ещё раз.');
+  //         //   setIsInfoTooltipPopupOpen(true);
+  //         //   setInfoTooltipImage(imgFail);
+  //         //   history.push('/signup');
+  //         //   return
+  //         // }
+  //       }
+  //       if (res.error) {
+  //         setMessage('Что-то пошло не так! Попробуйте ещё раз.');
+  //         setInfoTooltipImage(imgFail);
+  //         history.push('/signup');
+  //       }
+  //       if (res.message) {
+  //         setMessage('Что-то пошло не так! Попробуйте ещё раз.');
+  //         setInfoTooltipImage(imgFail);
+  //       }
+
+  //       .then(() => {
+  //         setIsInfoTooltipPopupOpen(true);
+  //       })
+  //         .catch((err) => {
+  //           console.log(err);
+  //         });
+  //     })
+
+  //   // .catch(err => console.log(err))
+  //   // .catch(() => {
+  //   //   setMessage('Что-то пошло не так! Попробуйте ещё раз.');
+  //   //   setIsInfoTooltipPopupOpen(true);
+  //   //   setInfoTooltipImage(imgFail);
+  //   // })
+  // }
+
   function handleRegisterSubmit(password, email) {
     register(password, email)
-      // .then( e => {
-      //   console.log('Все ок', e)
-      // })
-      // .catch( e => {
-      //   console.log('Ошибка', e)
-      // })
       .then((res) => {
-        console.log(res.status)
-        if (res.statusCode !== 400) {
+        if (res.data) {
+          console.log(res.data)
           setMessage('Вы успешно зарегистрировались!');
           setIsInfoTooltipPopupOpen(true);
           setInfoTooltipImage(imgSuccess);
-          history.push('/');
-          return
-
-        } else {
+          history.push('/signin')
+        }
+        if (res.error) {
           setMessage('Что-то пошло не так! Попробуйте ещё раз.');
-          setIsInfoTooltipPopupOpen(true);
           setInfoTooltipImage(imgFail);
-          history.push('/signup');
-          return
+        }
+        if (res.message) {
+          setMessage('Что-то пошло не так! Попробуйте ещё раз.');
+          setInfoTooltipImage(imgFail);
         }
       })
-      .catch(err => console.log(err))
-    // .catch(() => {
-    //   setMessage('Что-то пошло не так! Попробуйте ещё раз.');
-    //   setIsInfoTooltipPopupOpen(true);
-    //   setInfoTooltipImage(imgFail);
-    // })
+      .then(() => {
+        setIsInfoTooltipPopupOpen(true);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
   }
-
   const handleLogin = (password, email) => {
 
     authorize(password, email)
 
       .then((res) => {
-        if (!res) {
-          setMessage('Что-то пошло не так! Попробуйте ещё раз.')
-        }
-        if (res.statusCode !== 400) {
+        // if (!res) {
+        //   setMessage('Что-то пошло не так! Попробуйте ещё раз.')
+        // }
+        // if (res.statusCode !== 400) {
+        if (res.token) {
+          console.log(res.token)
+          localStorage.setItem('token', res.token);
           setEmail(email);
           setloggedIn(true);
           history.push('/');
@@ -128,6 +156,30 @@ function App() {
 
       })
   }
+
+  const tokenCheck = () => {
+    // const jwt = getToken();
+    const token = localStorage.getItem('token');
+
+    if (!token) {
+      return;
+    }
+
+    getContent(token).then((res) => {
+      if (res) {
+        console.log(res)
+        const email = res.email;
+        setloggedIn(true);
+        // localStorage.setItem('token', res.token);
+        setEmail(email);
+        history.push('/')
+      }
+    });
+  }
+
+  React.useEffect(() => {
+    tokenCheck();
+  }, []);
 
   // React.useEffect(() => {
   //   if (localStorage.getItem('token')) {
@@ -153,7 +205,7 @@ function App() {
 
 
   function signOut() {
-    localStorage.removeItem('jwt');
+    localStorage.removeItem('token');
     setloggedIn(false);
     history.push('/signin');
   }
