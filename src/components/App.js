@@ -42,7 +42,8 @@ function App() {
   const location = useLocation();
 
   const tokenCheck = () => {
-    const jwt = getToken();
+    // const jwt = getToken();
+    const jwt = localStorage.getItem('jwt');
 
     if (!jwt) {
       return;
@@ -60,7 +61,7 @@ function App() {
 
   React.useEffect(() => {
     tokenCheck();
-  }, []);
+  },[]);
 
 
   // React.useEffect(() => {
@@ -70,9 +71,15 @@ function App() {
   //   }
   // }, [])
 
-  
+
   function handleRegisterSubmit(password, email) {
     register(password, email)
+      // .then( e => {
+      //   console.log('Все ок', e)
+      // })
+      // .catch( e => {
+      //   console.log('Ошибка', e)
+      // })
       .then((res) => {
         console.log(res)
         if (res.statusCode !== 400) {
@@ -277,6 +284,8 @@ function App() {
 
         <Header email={email} loggedIn={loggedIn} loggedOut={signOut} />
 
+
+
         {/* {currentUser && cards && <Main
           onEditAvatar={handleEditAvatarClick}
           onEditProfile={handleEditProfileClick}
@@ -352,7 +361,6 @@ function App() {
           isOpen={isConfirmPopupOpen}
           buttonText={isLoading ? 'Сохранение...' : 'Да'}
         />
-
         <InfoTooltip
           onClose={closeAllPopups}
           isOpen={isInfoTooltipPopupOpen}
@@ -360,6 +368,7 @@ function App() {
           image={infoTooltipImage}
           message={message}
         />
+
 
 
       </div>

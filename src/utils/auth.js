@@ -13,6 +13,13 @@ export const register = (password, email) => {
         .then((response) => {
            return response.json();
         })
+        // .then( e => {
+        //     let data = e.json();
+        //     if(e.ok) {
+        //       return data;
+        //     }
+        //     return data.then(Promise.reject.bind(Promise))
+        //   })
 
         .then((res) => {
             return res;
@@ -31,8 +38,8 @@ export const authorize = (password, email) => {
         body: JSON.stringify({ password, email })
     })
         .then((response => response.json()))
-        .then((data) => {
-            if (data.user) {
+                .then((data) => {
+            if (data.token) {
                 // setToken(data.jwt);
                 localStorage.setItem('jwt', data.jwt);
                 return data;
