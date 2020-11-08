@@ -1,6 +1,6 @@
 import React from 'react';
 import { api } from '../utils/Api'
-import { Switch, Route, Redirect, useHistory, useLocation } from 'react-router-dom';
+import { Switch, Route, Redirect, useHistory } from 'react-router-dom';
 import Header from './Header';
 import Main from './Main';
 import Footer from './Footer';
@@ -12,13 +12,11 @@ import ConfirmPopup from './ConfirmPopup';
 import Register from './Register';
 import Login from './Login';
 import InfoTooltip from './InfoTooltip';
-import PageNotFound from './PageNotFound';
 import { CurrentUserContext } from '../contexts/CurrentUserContext';
 import ProtectedRoute from './ProtectedRoute';
 import { register, authorize, getContent } from '../utils/auth';
 import imgSuccess from '../images/Union_success.png'
 import imgFail from '../images/Union_fail.png';
-import { getToken } from '../utils/token';
 
 function App() {
 
@@ -39,76 +37,11 @@ function App() {
 
 
   const history = useHistory();
-  const location = useLocation();
-
-  
-
-
-  // React.useEffect(() => {
-  //   const jwt = localStorage.getItem('jwt');
-  //   if (jwt) {
-  //     setloggedIn(true);
-  //   }
-  // }, [])
-
-
-  // function handleRegisterSubmit(password, email) {
-  //   register(password, email)
-  //     // .then( e => {
-  //     //   console.log('Все ок', e)
-  //     // })
-  //     // .catch( e => {
-  //     //   console.log('Ошибка', e)
-  //     // })
-  //     .then((res) => {
-  //       console.log(res.status)
-  //       // if (res.statusCode !== 400) {
-  //       if (res.data) {
-  //         setMessage('Вы успешно зарегистрировались!');
-  //         setIsInfoTooltipPopupOpen(true);
-  //         setInfoTooltipImage(imgSuccess);
-  //         history.push('/');
-  //         return
-
-  //         // } else {
-  //         //   setMessage('Что-то пошло не так! Попробуйте ещё раз.');
-  //         //   setIsInfoTooltipPopupOpen(true);
-  //         //   setInfoTooltipImage(imgFail);
-  //         //   history.push('/signup');
-  //         //   return
-  //         // }
-  //       }
-  //       if (res.error) {
-  //         setMessage('Что-то пошло не так! Попробуйте ещё раз.');
-  //         setInfoTooltipImage(imgFail);
-  //         history.push('/signup');
-  //       }
-  //       if (res.message) {
-  //         setMessage('Что-то пошло не так! Попробуйте ещё раз.');
-  //         setInfoTooltipImage(imgFail);
-  //       }
-
-  //       .then(() => {
-  //         setIsInfoTooltipPopupOpen(true);
-  //       })
-  //         .catch((err) => {
-  //           console.log(err);
-  //         });
-  //     })
-
-  //   // .catch(err => console.log(err))
-  //   // .catch(() => {
-  //   //   setMessage('Что-то пошло не так! Попробуйте ещё раз.');
-  //   //   setIsInfoTooltipPopupOpen(true);
-  //   //   setInfoTooltipImage(imgFail);
-  //   // })
-  // }
 
   function handleRegisterSubmit(password, email) {
     register(password, email)
       .then((res) => {
         if (res.data) {
-          console.log(res.data)
           setMessage('Вы успешно зарегистрировались!');
           setIsInfoTooltipPopupOpen(true);
           setInfoTooltipImage(imgSuccess);
@@ -135,10 +68,6 @@ function App() {
     authorize(password, email)
 
       .then((res) => {
-        // if (!res) {
-        //   setMessage('Что-то пошло не так! Попробуйте ещё раз.')
-        // }
-        // if (res.statusCode !== 400) {
         if (res.token) {
           console.log(res.token)
           localStorage.setItem('token', res.token);
@@ -148,17 +77,15 @@ function App() {
           return;
         }
       })
-      // .then(() => {
-      //   handleInfoToolTipOpen();
-      // })
-      .catch(() => {
-        setMessage('Что-то пошло не так! Попробуйте ещё раз.');
-
+      .catch((res) => {
+        console.log(`Что-то пошло не так! Попробуйте ещё раз. ${res.message}`);
+        setMessage(`Что-то пошло не так! Попробуйте ещё раз. ${res.message}`);
+        setInfoTooltipImage(imgFail);;
+        setIsInfoTooltipPopupOpen(true);
       })
   }
 
   const tokenCheck = () => {
-    // const jwt = getToken();
     const token = localStorage.getItem('token');
 
     if (!token) {
@@ -168,9 +95,8 @@ function App() {
     getContent(token).then((res) => {
       if (res) {
         console.log(res)
-        const email = res.email;
+        const email = res.data.email;
         setloggedIn(true);
-        // localStorage.setItem('token', res.token);
         setEmail(email);
         history.push('/')
       }
@@ -179,30 +105,14 @@ function App() {
 
   React.useEffect(() => {
     tokenCheck();
-  }, []);
+  }, [localStorage]);
 
   // React.useEffect(() => {
-  //   if (localStorage.getItem('token')) {
-  //     Promise.all([getContent(), api.getInitialCards()])
-  //       .then(([user, cards]) => {
-  //         if (user) {
-  //           setСurrentUser(user);
-  //           setCards(cards);
-  //           setloggedIn(true);
-  //           history.push('/');
-  //         }
-  //       })
-  //       .catch((err) => {
-  //         if (err === 400) {
-  //           console.error('Токен не передан или передан не в том формате');
-  //         }
-  //         if (err === 401) {
-  //           console.error('Переданный токен некорректен');
-  //         }
-  //       });
+  //   const token = localStorage.getItem('token');
+  //   if (token) {
+  //     setloggedIn(true);
   //   }
-  // }, [location.pathname]);
-
+  // }, [])
 
   function signOut() {
     localStorage.removeItem('token');
@@ -336,18 +246,6 @@ function App() {
 
         <Header email={email} loggedIn={loggedIn} loggedOut={signOut} />
 
-
-
-        {/* {currentUser && cards && <Main
-          onEditAvatar={handleEditAvatarClick}
-          onEditProfile={handleEditProfileClick}
-          onAddPlace={handleAddPlaceClick}
-          onCardClick={handleCardClick}
-          cards={cards}
-          onCardLike={handleCardLike}
-          onCardDelete={handleCardConfirm}
-
-        />} */}
         <Switch>
 
           <Route path="/signin">
@@ -371,13 +269,9 @@ function App() {
             value={currentUser}
 
           />
-
+          
           <Route path="/">
             {loggedIn ? <Redirect to="/" /> : <Redirect to="/signin" />}
-          </Route>
-
-          <Route path="*">
-            <PageNotFound />
           </Route>
 
         </Switch>
@@ -420,8 +314,6 @@ function App() {
           image={infoTooltipImage}
           message={message}
         />
-
-
 
       </div>
     </CurrentUserContext.Provider >
