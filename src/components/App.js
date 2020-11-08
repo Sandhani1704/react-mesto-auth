@@ -61,7 +61,7 @@ function App() {
 
   React.useEffect(() => {
     tokenCheck();
-  },[]);
+  },[loggedIn]);
 
 
   // React.useEffect(() => {
@@ -81,7 +81,7 @@ function App() {
       //   console.log('Ошибка', e)
       // })
       .then((res) => {
-        console.log(res)
+        console.log(res.status)
         if (res.statusCode !== 400) {
           setMessage('Вы успешно зарегистрировались!');
           setIsInfoTooltipPopupOpen(true);
