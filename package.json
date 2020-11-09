@@ -1,5 +1,5 @@
 {
-  "name": "mesto-react",
+  "name": "react-mesto-auth",
   "version": "0.1.0",
   "private": true,
   "dependencies": {
@@ -12,7 +12,7 @@
     "react-router-dom": "^5.2.0",
     "react-scripts": "3.4.3"
   },
-  "homepage": ".",
+  "homepage": "https://myusername.github.io/react-mesto-auth",
   "scripts": {
     "predeploy": "npm run build",
     "deploy": "gh-pages -d build",
