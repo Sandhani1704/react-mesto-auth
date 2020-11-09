@@ -1,24 +1,24 @@
 {
   "files": {
     "main.css": "/react-mesto-auth/static/css/main.5a98282e.chunk.css",
-    "main.js": "/react-mesto-auth/static/js/main.77ce35f5.chunk.js",
-    "main.js.map": "/react-mesto-auth/static/js/main.77ce35f5.chunk.js.map",
+    "main.js": "/react-mesto-auth/static/js/main.daa7e0a0.chunk.js",
+    "main.js.map": "/react-mesto-auth/static/js/main.daa7e0a0.chunk.js.map",
     "runtime-main.js": "/react-mesto-auth/static/js/runtime-main.0e88f56d.js",
     "runtime-main.js.map": "/react-mesto-auth/static/js/runtime-main.0e88f56d.js.map",
-    "static/js/2.3b9a54cc.chunk.js": "/react-mesto-auth/static/js/2.3b9a54cc.chunk.js",
-    "static/js/2.3b9a54cc.chunk.js.map": "/react-mesto-auth/static/js/2.3b9a54cc.chunk.js.map",
+    "static/js/2.50ea58ff.chunk.js": "/react-mesto-auth/static/js/2.50ea58ff.chunk.js",
+    "static/js/2.50ea58ff.chunk.js.map": "/react-mesto-auth/static/js/2.50ea58ff.chunk.js.map",
     "index.html": "/react-mesto-auth/index.html",
-    "precache-manifest.90ca44fb82930e1518346a1016122950.js": "/react-mesto-auth/precache-manifest.90ca44fb82930e1518346a1016122950.js",
+    "precache-manifest.64b09791f535a990176465cfb14d97dc.js": "/react-mesto-auth/precache-manifest.64b09791f535a990176465cfb14d97dc.js",
     "service-worker.js": "/react-mesto-auth/service-worker.js",
     "static/css/main.5a98282e.chunk.css.map": "/react-mesto-auth/static/css/main.5a98282e.chunk.css.map",
-    "static/js/2.3b9a54cc.chunk.js.LICENSE.txt": "/react-mesto-auth/static/js/2.3b9a54cc.chunk.js.LICENSE.txt",
+    "static/js/2.50ea58ff.chunk.js.LICENSE.txt": "/react-mesto-auth/static/js/2.50ea58ff.chunk.js.LICENSE.txt",
     "static/media/Close_Icon.svg": "/react-mesto-auth/static/media/Close_Icon.c2d0901f.svg",
     "static/media/index.css": "/react-mesto-auth/static/media/remove-button.efa6fb04.svg"
   },
   "entrypoints": [
     "static/js/runtime-main.0e88f56d.js",
-    "static/js/2.3b9a54cc.chunk.js",
+    "static/js/2.50ea58ff.chunk.js",
     "static/css/main.5a98282e.chunk.css",
-    "static/js/main.77ce35f5.chunk.js"
+    "static/js/main.daa7e0a0.chunk.js"
   ]
 }
