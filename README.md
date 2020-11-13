@@ -14,6 +14,12 @@
 
 ### Используемые технологии: HTML, CSS, JS, React.
  
- ### Для запуска проекта npm start. 
+### Для развертывания проекта локально необходимо:
 
- * [Ссылка на проект](https://sandhani1704.github.io/react-mesto-auth/) 
+* Cкопировать репозиторий: `https://github.com/Sandhani1704/react-mesto-auth.git`;
+
+* Установить зависимости: `npm install`;
+
+* Запустить проект на локальном сервере: `npm start`.
+
+[Ссылка на проект](https://sandhani1704.github.io/react-mesto-auth/) 
