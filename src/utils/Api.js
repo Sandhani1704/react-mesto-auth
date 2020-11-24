@@ -15,7 +15,12 @@ export default class Api {
 
   getUserInfo() {
     return fetch(`${this._baseUrl}/users/me`, {
-      headers: this._headers
+      // headers: this._headers
+      headers: {
+        "Accept": "application/json",
+        "Content-Type": "application/json",
+        "Authorization": `Bearer ${localStorage.getItem('token')}`
+      }
     })
       .then(this._handleResponse)
   }
@@ -24,7 +29,12 @@ export default class Api {
     //loading(true);
     return fetch(`${this._baseUrl}/users/me`, {
       method: 'PATCH',
-      headers: this._headers,
+      // headers: this._headers,
+      headers: {
+        "Accept": "application/json",
+        "Content-Type": "application/json",
+        "Authorization": `Bearer ${localStorage.getItem('token')}`
+      },
       body: JSON.stringify({
         name,
         about
@@ -36,7 +46,12 @@ export default class Api {
   getInitialCards() {
     return fetch(`${this._baseUrl}/cards`, {
       //method: 'GET',
-      headers: this._headers
+      // headers: this._headers
+      headers: {
+        "Accept": "application/json",
+        "Content-Type": "application/json",
+        "Authorization": `Bearer ${localStorage.getItem('token')}`
+      },
     })
       .then(this._handleResponse)
   }
@@ -59,7 +74,12 @@ export default class Api {
     //loading(true);
     return fetch(`${this._baseUrl}/cards`, {
       method: 'POST',
-      headers: this._headers,
+      // headers: this._headers,
+      headers: {
+        "Accept": "application/json",
+        "Content-Type": "application/json",
+        "Authorization": `Bearer ${localStorage.getItem('token')}`
+      },
       body: JSON.stringify({ name, link, alt })
     })
       .then(this._handleResponse)
@@ -92,10 +112,15 @@ export default class Api {
 
 const api = new Api({
   // baseUrl: 'https://mesto.nomoreparties.co/v1/cohort-14',
+<<<<<<< HEAD
   baseUrl: 'http://projectmesto.students.nomoreparties.co',
+=======
+  baseUrl: 'https://apimesto.students.nomoreparties.co',
+>>>>>>> a5426a02112c8c79f9110501ece7fe23cbd821f0
   headers: {
     'Content-Type': 'application/json',
-    authorization: '401963c2-8e67-4398-84ba-2d7df4f163fe'
+    // authorization: '401963c2-8e67-4398-84ba-2d7df4f163fe'
+    // authorization: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI1ZmJiYmMwZmZlOWE0ZTY0MjZiMGI2Y2EiLCJpYXQiOjE2MDYyMzI2MDMsImV4cCI6MTYwNjgzNzQwM30.zjsSE-HfZLOR3DW8YusvijfMrmQUGC0dVjhiNR3kv8U'
   }
 });
 
