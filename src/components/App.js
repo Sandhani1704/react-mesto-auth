@@ -95,7 +95,7 @@ function App() {
     getContent(token).then((res) => {
       if (res) {
         console.log(res)
-        const email = res.data.email;
+        const email = res.email;
         setloggedIn(true);
         setEmail(email);
         history.push('/')
@@ -269,7 +269,7 @@ function App() {
             value={currentUser}
 
           />
-          
+
           <Route path="/">
             {loggedIn ? <Redirect to="/" /> : <Redirect to="/signin" />}
           </Route>
