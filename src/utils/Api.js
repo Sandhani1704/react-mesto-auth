@@ -62,7 +62,12 @@ export default class Api {
 
     return fetch(`${this._baseUrl}/users/me/avatar`, {
       method: 'PATCH',
-      headers: this._headers,
+      // headers: this._headers,
+      headers: {
+        "Accept": "application/json",
+        "Content-Type": "application/json",
+        "Authorization": `Bearer ${localStorage.getItem('token')}`
+      },
       body: JSON.stringify({
         avatar
       })
@@ -86,9 +91,14 @@ export default class Api {
   }
 
   putLike(cardID) {
-    return fetch(`${this._baseUrl}/cards/likes/${cardID}`, {
+    return fetch(`${this._baseUrl}/cards/${cardID}/likes`, {
       method: 'PUT',
-      headers: this._headers,
+      // headers: this._headers,
+      headers: {
+        "Accept": "application/json",
+        "Content-Type": "application/json",
+        "Authorization": `Bearer ${localStorage.getItem('token')}`
+      },
     })
       .then(this._handleResponse)
   }
@@ -96,15 +106,25 @@ export default class Api {
   deleteCard(cardID) {
     return fetch(`${this._baseUrl}/cards/${cardID}`, {
       method: 'DELETE',
-      headers: this._headers,
+      // headers: this._headers,
+      headers: {
+        "Accept": "application/json",
+        "Content-Type": "application/json",
+        "Authorization": `Bearer ${localStorage.getItem('token')}`
+      },
     })
       .then(this._handleResponse)
   }
 
   removeLike(cardID) {
-    return fetch(`${this._baseUrl}/cards/likes/${cardID}`, {
+    return fetch(`${this._baseUrl}/cards/${cardID}/likes`, {
       method: 'DELETE',
-      headers: this._headers,
+      // headers: this._headers,
+      headers: {
+        "Accept": "application/json",
+        "Content-Type": "application/json",
+        "Authorization": `Bearer ${localStorage.getItem('token')}`
+      },
     })
       .then(this._handleResponse)
   }
@@ -112,11 +132,7 @@ export default class Api {
 
 const api = new Api({
   // baseUrl: 'https://mesto.nomoreparties.co/v1/cohort-14',
-<<<<<<< HEAD
-  baseUrl: 'http://projectmesto.students.nomoreparties.co',
-=======
   baseUrl: 'https://apimesto.students.nomoreparties.co',
->>>>>>> a5426a02112c8c79f9110501ece7fe23cbd821f0
   headers: {
     'Content-Type': 'application/json',
     // authorization: '401963c2-8e67-4398-84ba-2d7df4f163fe'

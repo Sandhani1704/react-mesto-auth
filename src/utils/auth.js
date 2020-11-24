@@ -1,9 +1,5 @@
-<<<<<<< HEAD
-export const BASE_URL = 'http://projectmesto.students.nomoreparties.co';
-=======
 export const BASE_URL = 'https://apimesto.students.nomoreparties.co';
 // export const BASE_URL = 'https://auth.nomoreparties.co'; 
->>>>>>> a5426a02112c8c79f9110501ece7fe23cbd821f0
 
 export const register = (password, email) => {
     return fetch(`${BASE_URL}/signup`, {
