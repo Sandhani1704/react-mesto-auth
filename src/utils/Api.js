@@ -1,4 +1,3 @@
-
 export default class Api {
   constructor({ baseUrl, headers }) {
     this._baseUrl = baseUrl;
@@ -15,7 +14,6 @@ export default class Api {
 
   getUserInfo() {
     return fetch(`${this._baseUrl}/users/me`, {
-      // headers: this._headers
       headers: {
         "Accept": "application/json",
         "Content-Type": "application/json",
@@ -26,10 +24,8 @@ export default class Api {
   }
 
   setUserInfo({ name, about }) {
-    //loading(true);
     return fetch(`${this._baseUrl}/users/me`, {
       method: 'PATCH',
-      // headers: this._headers,
       headers: {
         "Accept": "application/json",
         "Content-Type": "application/json",
@@ -45,8 +41,6 @@ export default class Api {
 
   getInitialCards() {
     return fetch(`${this._baseUrl}/cards`, {
-      //method: 'GET',
-      // headers: this._headers
       headers: {
         "Accept": "application/json",
         "Content-Type": "application/json",
@@ -56,13 +50,10 @@ export default class Api {
       .then(this._handleResponse)
   }
 
-
-
   setUserAvatar({ avatar }) {
 
     return fetch(`${this._baseUrl}/users/me/avatar`, {
       method: 'PATCH',
-      // headers: this._headers,
       headers: {
         "Accept": "application/json",
         "Content-Type": "application/json",
@@ -76,10 +67,8 @@ export default class Api {
   }
 
   addCard({ name, link, alt }) {
-    //loading(true);
     return fetch(`${this._baseUrl}/cards`, {
       method: 'POST',
-      // headers: this._headers,
       headers: {
         "Accept": "application/json",
         "Content-Type": "application/json",
@@ -93,7 +82,6 @@ export default class Api {
   putLike(cardID) {
     return fetch(`${this._baseUrl}/cards/${cardID}/likes`, {
       method: 'PUT',
-      // headers: this._headers,
       headers: {
         "Accept": "application/json",
         "Content-Type": "application/json",
@@ -106,7 +94,6 @@ export default class Api {
   deleteCard(cardID) {
     return fetch(`${this._baseUrl}/cards/${cardID}`, {
       method: 'DELETE',
-      // headers: this._headers,
       headers: {
         "Accept": "application/json",
         "Content-Type": "application/json",
@@ -119,7 +106,6 @@ export default class Api {
   removeLike(cardID) {
     return fetch(`${this._baseUrl}/cards/${cardID}/likes`, {
       method: 'DELETE',
-      // headers: this._headers,
       headers: {
         "Accept": "application/json",
         "Content-Type": "application/json",
@@ -131,12 +117,9 @@ export default class Api {
 }
 
 const api = new Api({
-  // baseUrl: 'https://apimesto.students.nomoreparties.co',
   baseUrl: 'https://api.galkina.students.nomoreparties.xyz',
   headers: {
     'Content-Type': 'application/json',
-    // authorization: '401963c2-8e67-4398-84ba-2d7df4f163fe'
-    // authorization: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI1ZmJiYmMwZmZlOWE0ZTY0MjZiMGI2Y2EiLCJpYXQiOjE2MDYyMzI2MDMsImV4cCI6MTYwNjgzNzQwM30.zjsSE-HfZLOR3DW8YusvijfMrmQUGC0dVjhiNR3kv8U'
   }
 });
 

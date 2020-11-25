@@ -120,16 +120,16 @@ function App() {
     history.push('/signin');
   }
 
-
   React.useEffect(() => {
-    Promise.all([api.getUserInfo(), api.getInitialCards()])
-      .then(([userInfo, initialCards]) => {
-        setСurrentUser(userInfo)
-        setCards(initialCards);
-      })
-      .catch((error) => console.log('Ошибка запроса - ' + error))
-
-  }, []);
+    if (loggedIn) {
+      Promise.all([api.getUserInfo(), api.getInitialCards()])
+        .then(([userInfo, initialCards]) => {
+          setСurrentUser(userInfo)
+          setCards(initialCards);
+        })
+        .catch((error) => console.log('Ошибка запроса - ' + error))
+    }
+  }, [loggedIn]);
 
   function handleUpdateUser({ name, about }) {
     setIsLoading(true)
@@ -152,10 +152,7 @@ function App() {
       }
       )
       .catch(err => console.error(err))
-
-
   }
-
 
   function handleCardLike(card) {
 

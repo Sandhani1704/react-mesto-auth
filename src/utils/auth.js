@@ -1,6 +1,4 @@
 export const BASE_URL = 'https://api.galkina.students.nomoreparties.xyz';
-// export const BASE_URL = 'https://apimesto.students.nomoreparties.co';
-// export const BASE_URL = 'https://auth.nomoreparties.co'; 
 
 export const register = (password, email) => {
     return fetch(`${BASE_URL}/signup`, {
